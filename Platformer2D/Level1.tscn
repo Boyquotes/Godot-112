@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://assets/player/icon.png" type="Texture" id=1]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=2]
@@ -9,6 +9,10 @@
 [ext_resource path="res://assets/WorldTiles/tileYellow_07.png" type="Texture" id=7]
 [ext_resource path="res://assets/backgrounds/set2_background.png" type="Texture" id=8]
 [ext_resource path="res://assets/backgrounds/set2_tiles.png" type="Texture" id=9]
+[ext_resource path="res://coin.tscn" type="PackedScene" id=10]
+[ext_resource path="res://assets/HUD/coin_gold.png" type="Texture" id=11]
+[ext_resource path="res://assets/fonts/BalsamiqSans-Bold.ttf" type="DynamicFontData" id=12]
+[ext_resource path="res://HUD.gd" type="Script" id=13]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -114,6 +118,17 @@ extents = Vector2( 31.4049, 30.8569 )
 [sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 1500, 23.5648 )
 
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 1, 1, 1, 0.109804 )
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 90
+
+[sub_resource type="DynamicFont" id=9]
+size = 50
+font_data = ExtResource( 12 )
+
 [node name="Level1" type="Node2D"]
 
 [node name="Background" type="ParallaxBackground" parent="."]
@@ -128,7 +143,7 @@ texture = ExtResource( 8 )
 centered = false
 
 [node name="Sky Blocks2" type="ParallaxLayer" parent="Background"]
-motion_scale = Vector2( 0.7, 0.7 )
+motion_scale = Vector2( 0.4, 0.4 )
 motion_mirroring = Vector2( 1280, 960 )
 
 [node name="Sprite" type="Sprite" parent="Background/Sky Blocks2"]
@@ -142,7 +157,7 @@ motion_scale = Vector2( 0.7, 0.7 )
 motion_mirroring = Vector2( 1600, 1200 )
 
 [node name="Sprite" type="Sprite" parent="Background/Sky Blocks"]
-position = Vector2( 38, -412 )
+position = Vector2( 10.4321, -735.157 )
 scale = Vector2( 2.5, 2.5 )
 texture = ExtResource( 9 )
 centered = false
@@ -195,4 +210,50 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FallZone"]
 shape = SubResource( 7 )
 
+[node name="coin1" parent="." instance=ExtResource( 10 )]
+position = Vector2( 757.043, -113.114 )
+
+[node name="coin2" parent="." instance=ExtResource( 10 )]
+position = Vector2( 731.362, 786.905 )
+
+[node name="coin3" parent="." instance=ExtResource( 10 )]
+position = Vector2( 1528.83, 25.8163 )
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource( 13 )
+
+[node name="Panel" type="Panel" parent="HUD"]
+margin_left = 39.2734
+margin_top = 33.3759
+margin_right = 188.273
+margin_bottom = 98.3759
+custom_styles/panel = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="HUD"]
+margin_left = 59.0
+margin_top = 42.0
+margin_right = 120.0
+margin_bottom = 103.0
+rect_scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HUD"]
+margin_left = 110.0
+margin_top = 37.0
+margin_right = 167.0
+margin_bottom = 97.0
+custom_fonts/font = SubResource( 9 )
+custom_colors/font_color = Color( 0.92549, 1, 0.0352941, 1 )
+text = "x 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="update_coin_counter" from="Player" to="HUD" method="_on_Player_update_coin_counter"]
 [connection signal="body_entered" from="FallZone" to="Player" method="_on_FallZone_body_entered"]
